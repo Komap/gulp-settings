@@ -1,0 +1,73 @@
+@mixin font($font_name, $file_name, $weight, $style) {
+    @font-face {
+    font-family: $font_name;
+    font-display: swap;
+    src: url("../fonts/#{$file_name}.woff") format("woff"), url("../fonts/#{$file_name}.woff2") format("woff2");
+    font-weight: #{$weight};
+    font-style: #{$style};
+    }
+}
+
+
+
+
+@import '_fonts';
+
+body{
+    font-style: 24px;
+}
+
+p{
+    color: grey;
+}
+
+.container{
+    max-width: 100%;
+    display: flex;
+    flex: 0 0 33.333%;
+    justify-content: space-between;
+    @media (max-width: 767px) {
+        width: 50%;
+    }
+    @media (max-width: 480px) {
+        width: 50%;
+    }
+    @media (max-width: 320px) {
+        width: 50%;
+    }
+}
+img {
+    max-width: 100px;
+}
+
+
+.container{
+    .box1{
+        @media (max-width: 767px) {
+            background: #c3c334;
+        }
+    }
+}
+
+
+.box1{
+    background: url('../img/test.jpg');
+    display: block;
+    width: 20%;
+    height: auto;
+    position: relative;
+    @media (max-width: 480px) {
+        width: 50%;
+    }
+}
+
+.box2{
+    background: url('../img/tomatoes.jpg') no-repeat;
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+    @media (max-width: 480px) {
+        width: 50%;
+    }
+}

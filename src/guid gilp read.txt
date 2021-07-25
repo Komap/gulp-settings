@@ -1,0 +1,62 @@
+*****Установка Галп
+1. решить проблему с правами перед ШЛОБАЛЬНОЙ установкой Галп
+ Set-ExecutionPolicy RemoteSigned
+После выбрать YES
+Если будет ошибка, открыть терминал с правами админа и повторить команду 
+
+2. Установка глобально npm install --global gulp-cli
+
+3. Открыть терминал в папке проекта - npm init - установка package.json
+
+4. Установка Галп для локального проекта npm i gulp --save-dev 
+
+5. Создать файл gulpfile.js в папке с проектом, например
+Проект/package-lock.json, package.json, gulpfile.js
+    src/fonts, js/script.js
+    scss/style.scss
+
+
+6. проверка на работосопобность Галп (если нужно)
+Вставить код в gulpfile.js :
+function defaultTask(cb) {
+  cb();
+}
+exports.default = defaultTask
+написать в терминале gulp
+
+7. Создаю пути переменную(объект) path для вывода и вотча папок 
+(смотреть в самом gulpfile.js этого проекта full-sites/1)
+создаю переменные(пока хз) вместе с подключением самого галпа
+let {dest, src} = require('gulp'), 
+gulp = require('gulp'),
+
+8. npm install browser-sync --save-dev  -обновляет страницу
+добавляю его в переменную с методом create
+browserSync = require('browser-sync').create();
+создаю функцию и в функции ему даю натсройки(смотреть в файле gulpfile.js в проекте full-sites/1)
+
+
+Далее создаются функции для отдельной работы, например для ХТМЛ, а потом переменнная, 
+в которой функция gulp.series(htmlFunction, ..., ...); в которую по порядку передаются все функции
+
+9. Создать переменную(для отслеживания), в которую нужно добавлять функции с настрйоками
+
+//первая функция для хтмл _ браузерсинк
+const htmlFunction = () => {
+  //возращает
+  return src(path.src.html)
+  .pipe(dest(path.build.html))//переброск файлов в папки для релиза, .pipe -метод галпа, dest - переменная галпа
+  .pipe(fileinclude())
+  .pipe(browsersync.stream())// обновить страничку + stream - наверное типо стрима
+}
+
+
+//в серию записываются функции ,которые уже будут выполняться
+let build = gulp.series(htmlFunction);
+// отслеживает
+let watch = gulp.parallel(build, browserSyncSettings);
+//? А так же галп нужно подружить с новыми переменными .чтобы он их понимал! переменная watch будет запускать browserSyncSettings
+exports.htmlFunction = htmlFunction;
+exports.build = build;
+exports.watch = watch;//- let watch = gulp.parallel(browserSyncSettings);
+exports.default = watch;// переменная по умолчанию  

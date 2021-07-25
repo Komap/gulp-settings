@@ -36,16 +36,16 @@ let path = {  // папка на релиз
   },//?рабочая папка (исходная проекта)
   src:{  
     html: [srcProject + '/*.html' , "!" + srcProject + '/_*.html'], //читает все хтмл и "!" - исключает все хтмл с _префиксом
-    scss: srcProject + '/scss/style.scss', // этот файл будет собирать в себя все файл scss
-    js: srcProject + '/js/script.js',// этот файл будет собирать в себя все файл js
-    img: srcProject + '/img/**/*.{jpg,png,svg,gif,ico,webp}',// в папке Img будет много папок и будут разные расширения
+    scss: srcProject + '/scss/style.scss', 
+    js: srcProject + '/js/script.js',
+    img: srcProject + '/img/**/*.{jpg,png,svg,gif,ico,webp}',
     fonts: srcProject + '/fonts/*.ttf',
   },
   watch:{//?тут gulp, будет вотчить все прописанные пути
-    html: srcProject + '/**/*.html',// вотчиться все что с расширением html
-    scss: srcProject + '/scss/**/*.scss', // вотчиться все что с расширением scss
-    js: srcProject + '/js/**/*.js', // вотчиться все что с расширением js
-    img: srcProject + '/img/**/*.{jpg,png,svg,gif,ico,webp}',// вотчиться данные расширения
+    html: srcProject + '/**/*.html',
+    scss: srcProject + '/scss/**/*.scss', 
+    js: srcProject + '/js/**/*.js', // 
+    img: srcProject + '/img/**/*.{jpg,png,svg,gif,ico,webp}',
 //шрифты постоянно вотчить не нужно
   },
   clean: '/' + dist + '/', //удаление папки после запука галпа(хз зачем)
@@ -68,11 +68,11 @@ const browserSyncSettings = (params) => {
 
 const htmlFunction = () => {
   //возращает
-  return src(path.src.html) // корень рабочей папки
+  return src(path.src.html) 
   .pipe(fileinclude())
   .pipe(webpHTML())
-  .pipe(dest(path.build.html))//переброс в релиз,.pipe -метод галпа, dest(перебрасывает)-переменная галпа
-  .pipe(browsersync.stream())// обновить страничку + stream - наверное типо стрима
+  .pipe(dest(path.build.html))
+  .pipe(browsersync.stream())
 }
 
 
@@ -94,7 +94,7 @@ const cssFunction = () => {
       groupMedia()// все медиа с разных мест собирает в одно
    )
    .pipe(webpCss())
-   .pipe(dest(path.build.css))// выгружает готовый css
+   .pipe(dest(path.build.css))
    .pipe(cleanCss())//сжимает css 
    .pipe(rename({
       extname: '.min.css' //грубо говоря создает новый такй о же css, только сжатый
@@ -104,9 +104,9 @@ const cssFunction = () => {
 }
 
 const jsFunction = () => {
-  return src(path.src.js) // корень рабочей папки
-  .pipe(fileinclude())// сперва инклюдить
-  .pipe(dest(path.build.js))//переброс в релиз,.pipe -метод галпа, dest(перебрасывает)-переменная галпа
+  return src(path.src.js) 
+  .pipe(fileinclude())
+  .pipe(dest(path.build.js))
   .pipe(
     uglify()
   )
@@ -114,7 +114,7 @@ const jsFunction = () => {
     extname: '.min.js' //грубо говоря создает новый такй о же css, только сжатый
   }))
  .pipe(dest(path.build.js))
-  .pipe(browsersync.stream())// обновить страничку + stream - наверное типо стрима
+  .pipe(browsersync.stream())
 }
 
 
@@ -199,12 +199,9 @@ const cleanFiles = () => {
 
 //в серию записываются функции ,которые уже будут выполняться
 let build = gulp.series(cleanFiles, gulp.parallel(htmlFunction, cssFunction, jsFunction, imgMinFunction, fontsFunction), fontsStyleFunction);
-// Отслеживать
 // переменная watch будет запускать browserSyncSettings
 let watch = gulp.parallel(build, watchFiles, browserSyncSettings);
-//? А так же галп нужно подружить с новыми переменными. чтобы он их понимал! 
-//? для этого используется exports
-// exports.watchFiles = watchFiles;
+//? В галп добавляю свои функции, чтобы он их понимал, и  для этого используется exports
 
 
 exports.htmlFunction = htmlFunction;
@@ -219,15 +216,3 @@ exports.default = watch;// переменная по умолчанию кото
 
 
 //экспорт переменных (наверное для ноды) чтобы было системе понятно, что они делают
-
-
-
-
-
-
-/*
-
-npm install browser-sync gulp --save-dev - перезагрузка браузера
-npm install --save-dev gulp-file-include - собирать хтмл по фалам где(хедер, футер и тд)
-
-*/
